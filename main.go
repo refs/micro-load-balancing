@@ -24,9 +24,9 @@ func (h *Hello) Hello(ctx context.Context, a *empty.Empty, r *proto.Response) er
 }
 
 var (
-	helloMsg   string
-	instanceMD string
-	qMode      bool
+	helloMsg string
+	nodeName string
+	qMode    bool
 )
 
 func allNodes(r registry.Registry) {
@@ -65,7 +65,7 @@ func queriedNode(r registry.Registry) {
 				}
 
 				// select the ones which label matches the queried
-				if instanceMD != "" && node.Metadata["ocis_instance"] == instanceMD {
+				if nodeName != "" && node.Metadata["ocis_instance"] == nodeName {
 					fmt.Printf("addr: %v\n", node.Address)
 					break
 				}
@@ -78,14 +78,14 @@ func queriedNode(r registry.Registry) {
 
 func main() {
 	flag.StringVar(&helloMsg, "msg", "", "message to be printed")
-	flag.StringVar(&instanceMD, "ins", "", "set instance metadata")
+	flag.StringVar(&nodeName, "node_name", "", "set instance metadata")
 	flag.BoolVar(&qMode, "q", false, "query micro registry for a list of nodes")
 
 	flag.Parse()
 
 	if qMode {
 		r := mdns.NewRegistry()
-		if instanceMD != "" {
+		if nodeName != "" {
 			queriedNode(r)
 			return
 		}
@@ -94,9 +94,9 @@ func main() {
 	}
 
 	var md map[string]string
-	if instanceMD != "" {
+	if nodeName != "" {
 		md = map[string]string{
-			"ocis_instance": instanceMD,
+			"ocis_instance": nodeName,
 		}
 	}
 

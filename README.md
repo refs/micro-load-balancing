@@ -101,8 +101,8 @@ A combination of metadata + registry can be used to query the mdns registry (for
 ```bash
 ## NOTE: each one of this on its own terminal session.
 /usr/local/bin/micro api
-go run main.go --msg=1 --ins=1
-go run main.go --msg=2 --ins=2
+go run main.go --msg=1 --node_name=1
+go run main.go --msg=2 --node_name=2
 go run main.go --msg=3
 
 go run main.go --q
@@ -129,11 +129,11 @@ A: With a solution like this, we can have a metadata value on every service and 
 ```bash
 ## NOTE: each one of this on its own terminal session.
 /usr/local/bin/micro api
-go run main.go --msg=1 --ins=owncloud
-go run main.go --msg=2 --ins=eos
-go run main.go --msg=3 --ins=local
+go run main.go --msg=1 --node_name=owncloud
+go run main.go --msg=2 --node_name=eos
+go run main.go --msg=3 --node_name=local
 
-go run main.go --q --ins=owncloud
+go run main.go --q --node_name=owncloud
 ```
 
 the output of the last should be something simmilar to:
@@ -146,7 +146,7 @@ On a higher level, this functionality can be used like:
 
 1. request to `/storage/owncloud/`
 2. get the storage name from the url: `owncloud`
-3. query the registry like: `go run main.go --q --ins=owncloud`
+3. query the registry like: `go run main.go --q --node_name=owncloud`
 4. get node address
 5. create gRPC client
 6. do gRPC request

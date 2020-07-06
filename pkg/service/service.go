@@ -15,7 +15,7 @@ func NewHello(name string, handler proto.SayHandler, md map[string]string) micro
 			Name: "msg",
 		}),
 		micro.Flags(&cli.StringFlag{
-			Name: "ins",
+			Name: "node_name",
 		}),
 		micro.Flags(&cli.StringFlag{
 			Name: "q",
