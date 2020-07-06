@@ -5,6 +5,8 @@
   - [Preconditions:](#preconditions)
   - [Simple](#simple)
   - [Advanced](#advanced)
+  - [Real Life Example](#real-life-example)
+    - [Demonstration](#demonstration)
 
 ## Premise
 
@@ -116,3 +118,35 @@ metadata: map[broker:http ocis_instance:3 protocol:grpc registry:mdns server:grp
 addr: 10.42.17.12:61298
 metadata: map[broker:http ocis_instance:1 protocol:grpc registry:mdns server:grpc transport:grpc]
 ```
+
+## Real Life Example
+
+Q: Suppose in oCIS, a proxy wants to route to storage #2, but there is no information for where is this service running, and the random load balancer from Micro doesn't really help us as the request can only be served by the service the url points to. How can this be solved?
+A: With a solution like this, we can have a metadata value on every service and query the registry for services with such info. Let's see how this would be on this repo:
+
+### Demonstration
+
+```bash
+## NOTE: each one of this on its own terminal session.
+/usr/local/bin/micro api
+go run main.go --msg=1 --ins=owncloud
+go run main.go --msg=2 --ins=eos
+go run main.go --msg=3 --ins=local
+
+go run main.go --q --ins=owncloud
+```
+
+the output of the last should be something simmilar to:
+
+```bash
+addr: 10.42.17.12:61473
+```
+
+On a higher level, this functionality can be used like:
+
+1. request to `/storage/owncloud/`
+2. get the storage name from the url: `owncloud`
+3. query the registry like: `go run main.go --q --ins=owncloud`
+4. get node address
+5. create gRPC client
+6. do gRPC request
