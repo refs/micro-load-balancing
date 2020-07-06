@@ -8,12 +8,19 @@ import (
 )
 
 // NewHello creates a new micro service.
-func NewHello(name string, handler proto.SayHandler) micro.Service {
+func NewHello(name string, handler proto.SayHandler, md map[string]string) micro.Service {
 	s := micro.NewService(
 		micro.Name(name),
 		micro.Flags(&cli.StringFlag{
 			Name: "msg",
 		}),
+		micro.Flags(&cli.StringFlag{
+			Name: "ins",
+		}),
+		micro.Flags(&cli.StringFlag{
+			Name: "q",
+		}),
+		micro.Metadata(md),
 	)
 
 	s.Init()
