@@ -40,7 +40,7 @@ func allNodes(r registry.Registry) {
 		if len(serv.Nodes) > 1 {
 			for _, node := range serv.Nodes {
 				// select nodes with a present metadata value.
-				if _, ok := node.Metadata["ocis_instance"]; !ok {
+				if _, ok := node.Metadata["node_name"]; !ok {
 					continue
 				}
 				fmt.Printf("addr: %v\nmetadata: %+v\n", node.Address, node.Metadata)
@@ -60,12 +60,12 @@ func queriedNode(r registry.Registry) {
 		if len(serv.Nodes) > 1 {
 			for _, node := range serv.Nodes {
 				// select nodes with a present metadata value.
-				if _, ok := node.Metadata["ocis_instance"]; !ok {
+				if _, ok := node.Metadata["node_name"]; !ok {
 					continue
 				}
 
 				// select the ones which label matches the queried
-				if nodeName != "" && node.Metadata["ocis_instance"] == nodeName {
+				if nodeName != "" && node.Metadata["node_name"] == nodeName {
 					fmt.Printf("addr: %v\n", node.Address)
 					break
 				}
@@ -96,7 +96,7 @@ func main() {
 	var md map[string]string
 	if nodeName != "" {
 		md = map[string]string{
-			"ocis_instance": nodeName,
+			"node_name": nodeName,
 		}
 	}
 
